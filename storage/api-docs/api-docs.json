@@ -1,0 +1,572 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Documentation",
+        "description": "API Documentation for End user service",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "API App Server"
+        }
+    ],
+    "paths": {
+        "/v1/auth/login": {
+            "post": {
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "User login",
+                "operationId": "a1a0dd98bb5ac2c2340c31bf02f09d1e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResource"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Login failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "The email field is required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "USERS"
+                ],
+                "summary": "Get all users.",
+                "operationId": "bb2caab318eadb3d78d950ddf09d4958",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "User uuid - **AND**",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "full_name",
+                        "in": "query",
+                        "description": "User full_name - **AND**",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "role_id",
+                        "in": "query",
+                        "description": "User role - **AND**",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UsersCollection"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "USERS"
+                ],
+                "summary": "Create user. ***DONE***",
+                "operationId": "a1fce870c566eb5fc0cf3178ec5d2fed",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TrvSuccessResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Email invalid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": [
+                    "USERS"
+                ],
+                "summary": "Get user detail",
+                "operationId": "910a0c7cf580e1c605648d82a4e57f46",
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LoginRequest": {
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "example@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "pa55w0rd"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateUserRequest": {
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "full_name": {
+                        "description": "User full_name",
+                        "type": "string",
+                        "example": "Pham Van Tien",
+                        "nullable": true
+                    },
+                    "phone": {
+                        "description": "User phoen",
+                        "type": "string",
+                        "example": "0123456789",
+                        "nullable": true
+                    },
+                    "birthday": {
+                        "description": "User birthday",
+                        "type": "string",
+                        "example": "13-08-2000",
+                        "nullable": true
+                    },
+                    "email": {
+                        "description": "User email",
+                        "type": "string",
+                        "example": "example@gmail.com",
+                        "nullable": true
+                    },
+                    "role_id": {
+                        "description": "Role user id",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "username": {
+                        "description": "User username",
+                        "type": "string",
+                        "example": "phien"
+                    },
+                    "password": {
+                        "description": "User password",
+                        "type": "string",
+                        "example": "Pa55w0rd"
+                    },
+                    "User sex": {
+                        "description": "MALE:0, FEMALE:1",
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "example": "0"
+                    }
+                },
+                "type": "object"
+            },
+            "LoginResource": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/SuccessResource"
+                    },
+                    {
+                        "properties": {
+                            "meta": {
+                                "$ref": "#/components/schemas/MetaResource"
+                            },
+                            "data": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMDI4My0zNC0yMTktMTQ0LTE0Ni5uZ3Jvay5pby9hcGkvbG9naW4iLCJpYXQiOjE2NjY5Mzg4MTEsImV4cCI6MTY2Njk0MjQxMSwibmJmIjoxNjY2OTM4ODExLCJqdGkiOiJ1N1dYV3JKSFBxSjZ3dXA0Iiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJndWFyZCI6ImFwaSJ9.JRbvzCNv1CCxp1CbDuD6HefKO072eoFPNGjEP_aQiKo"
+                                    },
+                                    "expires_in": {
+                                        "description": "Amount of time in seconds until the access token expires",
+                                        "type": "integer",
+                                        "example": "2592"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "ErrorResource": {
+                "properties": {
+                    "data": {
+                        "type": "object"
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/MetaResource"
+                    }
+                },
+                "type": "object"
+            },
+            "MetaCursorPaginationResource": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/MetaResource"
+                    },
+                    {
+                        "properties": {
+                            "message": {
+                                "description": "Status code message",
+                                "type": "string",
+                                "example": "Successful operation"
+                            },
+                            "pagination": {
+                                "properties": {
+                                    "path": {
+                                        "type": "string",
+                                        "example": "api/v1/example"
+                                    },
+                                    "per_page": {
+                                        "type": "integer",
+                                        "example": "15"
+                                    },
+                                    "next_cursor": {
+                                        "type": "string",
+                                        "example": "eyJjcmVhdGVkX2F0IjoiMjAyMy0wNC0yMCAxMjowODoxMSIsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0",
+                                        "nullable": true
+                                    },
+                                    "next_page_url": {
+                                        "type": "string",
+                                        "example": "api/v1/example?cursor=eyJjcmVhdGVkX2F0IjoiMjAyMy0wNC0yMCAxMjowODoxMSIsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0",
+                                        "nullable": true
+                                    },
+                                    "prev_cursor": {
+                                        "type": "string",
+                                        "example": "eyJjcmVhdGVkX2F0IjoiMjAyMy0wNC0yMCAxMjowNjozMSIsIl9wb2ludHNUb05leHRJdGVtcyI6ZmFsc2V9",
+                                        "nullable": true
+                                    },
+                                    "prev_page_url": {
+                                        "type": "string",
+                                        "example": "api/v1/example?cursor=eyJjcmVhdGVkX2F0IjoiMjAyMy0wNC0yMCAxMjowODoxMSIsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "MetaPaginationResource": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/MetaResource"
+                    },
+                    {
+                        "properties": {
+                            "message": {
+                                "description": "Status code message",
+                                "type": "string",
+                                "example": "Successful operation"
+                            },
+                            "pagination": {
+                                "properties": {
+                                    "total": {
+                                        "description": "Total records",
+                                        "type": "integer",
+                                        "example": "10"
+                                    },
+                                    "count": {
+                                        "description": "Total records at current page",
+                                        "type": "integer",
+                                        "example": "15"
+                                    },
+                                    "per_page": {
+                                        "description": "Number of records per page",
+                                        "type": "integer",
+                                        "example": "10"
+                                    },
+                                    "current_page": {
+                                        "description": "Current page",
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "last_page": {
+                                        "description": "Last page",
+                                        "type": "integer",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "MetaResource": {
+                "properties": {
+                    "message": {
+                        "description": "Meta message",
+                        "type": "string"
+                    },
+                    "errors": {
+                        "description": "Meta error",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "SuccessResource": {
+                "properties": {
+                    "data": {
+                        "type": "object"
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/MetaResource"
+                    }
+                },
+                "type": "object"
+            },
+            "TrvSuccessResource": {
+                "properties": {
+                    "data": {
+                        "type": "object"
+                    },
+                    "meta": {
+                        "properties": {
+                            "message": {
+                                "type": "string",
+                                "example": "Successful operation"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "UserResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "full_name": {
+                        "type": "string",
+                        "example": "Pham Van Tien",
+                        "nullable": true
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "01234567889",
+                        "nullable": true
+                    },
+                    "birthday": {
+                        "type": "string",
+                        "example": "13-08-2000"
+                    },
+                    "sex": {
+                        "description": "0:Male, 1:Female",
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "example": 0,
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "example@gmail.com"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Ha Noi"
+                    },
+                    "account_balance": {
+                        "type": "string",
+                        "example": "19036101739010"
+                    }
+                },
+                "type": "object"
+            },
+            "UsersCollection": {
+                "properties": {
+                    "meta": {
+                        "$ref": "#/components/schemas/MetaResource"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "description": "Enter token in format: <b>Bearer token_here</b>",
+                "scheme": "bearer"
+            },
+            "ApiKeyAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "trv-api-key"
+            }
+        }
+    }
+}
