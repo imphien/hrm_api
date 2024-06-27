@@ -31,6 +31,21 @@ class UserService extends BaseService
      */
     public function getAll(Request $request): Collection
     {
-        return $this->model::query()->get();
+        $roleId = $request->get('role_id');
+        $userId = $request->get('user_id');
+        $fullName = $request->get('full_name');
+        return $this->model::query()->with('roles')
+                                    ->when($fullName, function ($q) use ($fullName){
+                                        $q->where('full_name', 'LIKE', '%' . $fullName . '%');
+                                    })
+                                    ->when($userId, function ($q) use ($userId){
+                                        $q->where('id', $userId);
+                                    })
+                                    ->when($roleId, function ($q) use ($roleId){
+                                        $q->whereHas('roles', function ($q) use ($roleId){
+                                            $q->where('roles.id', $roleId);
+                                        });
+                                    })
+                                    ->get();
     }
 }

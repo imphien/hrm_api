@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('account_balance')->nullable();
             $table->string('password');
+            $table->boolean('is_block')->default(\App\Enums\BlockStatus::NO);
             $table->timestamps();
         });
     }

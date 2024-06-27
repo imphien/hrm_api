@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RecruitmentController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +20,10 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::group(['prefix' => '/'], static function () {
-    Route::resource('/users', UserController::class)->only(['show', 'store']);
+    Route::resource('/users', UserController::class)->only(['show', 'store', 'update', 'destroy']);
     Route::get('/users', [UserController::class, 'getAll']);
+
+    Route::get('/roles', [RoleController::class, 'getAll']);
+
+    Route::get('/recruitments', [RecruitmentController::class, 'getAll']);
 })->middleware('auth');

@@ -73,6 +73,127 @@
                 }
             }
         },
+        "/recruitment": {
+            "get": {
+                "tags": [
+                    "RECRUITMENTS"
+                ],
+                "summary": "Get recruitments. ***DONE***",
+                "operationId": "fac8292635ac0fbf515d9f29d6f2aef2",
+                "parameters": [
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "Start date",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "13-08-2000"
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "description": "End date",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "13-08-2000"
+                    },
+                    {
+                        "name": "position",
+                        "in": "query",
+                        "description": "Position",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Developer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecruitmentsCollection"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "End date invalid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/roles": {
+            "get": {
+                "tags": [
+                    "ROLES"
+                ],
+                "summary": "Get all roles.",
+                "operationId": "5a0d584bfc52c53102b286e3b71d4dff",
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RoleCollection"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
         "/users": {
             "get": {
                 "tags": [
@@ -233,6 +354,70 @@
                         "BearerAuth": []
                     }
                 ]
+            },
+            "put": {
+                "tags": [
+                    "USERS"
+                ],
+                "summary": "Update user. ***DONE***",
+                "operationId": "ddfe232db1870b82493bf8bd25596d37",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TrvSuccessResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Email invalid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
             }
         }
     },
@@ -251,6 +436,32 @@
                     "password": {
                         "type": "string",
                         "example": "pa55w0rd"
+                    }
+                },
+                "type": "object"
+            },
+            "ListRecruitmentRequest": {
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "start_date": {
+                        "description": "Start date",
+                        "type": "string",
+                        "example": "13-08-2000",
+                        "nullable": true
+                    },
+                    "end_date": {
+                        "description": "End date",
+                        "type": "string",
+                        "example": "13-08-2000",
+                        "nullable": true
+                    },
+                    "position": {
+                        "description": "Position",
+                        "type": "string",
+                        "example": "Developer",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -299,7 +510,7 @@
                         "type": "string",
                         "example": "Pa55w0rd"
                     },
-                    "User sex": {
+                    "sex": {
                         "description": "MALE:0, FEMALE:1",
                         "type": "integer",
                         "enum": [
@@ -307,6 +518,72 @@
                             1
                         ],
                         "example": "0"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateUserRequest": {
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "full_name": {
+                        "description": "User full_name",
+                        "type": "string",
+                        "example": "Pham Van Tien",
+                        "nullable": true
+                    },
+                    "phone": {
+                        "description": "User phoen",
+                        "type": "string",
+                        "example": "0123456789",
+                        "nullable": true
+                    },
+                    "birthday": {
+                        "description": "User birthday",
+                        "type": "string",
+                        "example": "13-08-2000",
+                        "nullable": true
+                    },
+                    "email": {
+                        "description": "User email",
+                        "type": "string",
+                        "example": "example@gmail.com",
+                        "nullable": true
+                    },
+                    "role_id": {
+                        "description": "Role user id",
+                        "type": "integer",
+                        "example": "1",
+                        "nullable": true
+                    },
+                    "username": {
+                        "description": "User username",
+                        "type": "string",
+                        "example": "phien",
+                        "nullable": true
+                    },
+                    "password": {
+                        "description": "User password",
+                        "type": "string",
+                        "example": "Pa55w0rd",
+                        "nullable": true
+                    },
+                    "sex": {
+                        "description": "MALE:0, FEMALE:1",
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "example": "0",
+                        "nullable": true
+                    },
+                    "is_block": {
+                        "description": "Block user",
+                        "type": "boolean",
+                        "example": true,
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -492,6 +769,88 @@
                 },
                 "type": "object"
             },
+            "RecruitmentResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "position": {
+                        "type": "string",
+                        "example": "Developer"
+                    },
+                    "quantity": {
+                        "type": "number",
+                        "example": "1"
+                    },
+                    "content": {
+                        "type": "string",
+                        "example": "Intern"
+                    },
+                    "requirement": {
+                        "type": "string",
+                        "example": "Has experience"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "example@gmail.com"
+                    },
+                    "expired": {
+                        "type": "string",
+                        "example": "13-08-2024"
+                    }
+                },
+                "type": "object"
+            },
+            "RecruitmentsCollection": {
+                "properties": {
+                    "meta": {
+                        "$ref": "#/components/schemas/MetaResource"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/RecruitmentResource"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "RoleCollection": {
+                "properties": {
+                    "meta": {
+                        "$ref": "#/components/schemas/MetaResource"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/RoleResource"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "RoleResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Admin"
+                    }
+                },
+                "type": "object"
+            },
             "UserResource": {
                 "properties": {
                     "id": {
@@ -533,6 +892,16 @@
                     "account_balance": {
                         "type": "string",
                         "example": "19036101739010"
+                    },
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/RoleResource"
+                                }
+                            ]
+                        }
                     }
                 },
                 "type": "object"

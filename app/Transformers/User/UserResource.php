@@ -7,6 +7,7 @@
 namespace App\Transformers\User;
 
 use App\Enums\UserSex;
+use App\Transformers\Role\RoleResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
@@ -46,6 +47,13 @@ use OpenApi\Attributes as OA;
         new OA\Property(
             property: 'account_balance', type: 'string', example: '19036101739010',
         ),
+        new OA\Property(
+            property: 'roles',
+            type:     'array',
+            items:    new OA\Items(allOf: [
+                                              new OA\Schema(ref: RoleResource::class),
+                                          ])
+        )
     ])]
 class UserResource extends JsonResource
 {

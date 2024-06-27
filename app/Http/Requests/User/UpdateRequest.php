@@ -1,7 +1,7 @@
 <?php
 /**
  * @Author im.phien
- * @Date   Apr 03, 2024
+ * @Date   Apr 15, 2024
  */
 
 namespace App\Http\Requests\User;
@@ -13,7 +13,7 @@ use JetBrains\PhpStorm\ArrayShape;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'CreateUserRequest',
+    schema: 'UpdateUserRequest',
     required: ['data'],
     properties: [
         new OA\Property(
@@ -49,18 +49,21 @@ use OpenApi\Attributes as OA;
             description: 'Role user id',
             type: 'integer',
             example: '1',
+            nullable: true
         ),
         new OA\Property(
             property: 'username',
             description: 'User username',
             type: 'string',
             example: 'phien',
+            nullable: true
         ),
         new OA\Property(
             property: 'password',
             description: 'User password',
             type: 'string',
             example: 'Pa55w0rd',
+            nullable: true
         ),
         new OA\Property(
             property: 'sex',
@@ -68,21 +71,29 @@ use OpenApi\Attributes as OA;
             type: 'integer',
             enum: UserSex::class,
             example: '0',
+            nullable: true
+        ),
+        new OA\Property(
+            property: 'is_block',
+            description: 'Block user',
+            type: 'boolean',
+            example: true,
+            nullable: true
         ),
     ],
     type: 'object',
 )]
-class CreateRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * @Description
      *
      * @Author im.phien
-     * @Date   Apr 03, 2024
+     * @Date   Apr 15, 2024
      *
      * @return array
      */
-    #[ArrayShape(['full_name' => "string[]", 'phone' => "string[]", 'birthday' => "string[]", 'sex' => "array", 'email' => "string[]", 'role_id' => "string[]", 'username' => "string[]", 'password' => "string[]"])]
+    #[ArrayShape(['full_name' => "string[]", 'phone' => "string[]", 'birthday' => "string[]", 'sex' => "array", 'email' => "string[]", 'role_id' => "string[]", 'username' => "string[]", 'password' => "string[]", 'is_block' => "string[]"])]
     public function rules(): array
     {
         return [
@@ -90,10 +101,11 @@ class CreateRequest extends FormRequest
             'phone' => ['nullable, string'],
             'birthday' => ['nullable, string'],
             'sex' => ['nullable', new Enum(CreateRequest::class)],
-            'email' => ['required', 'email'],
-            'role_id' => ['required', 'exists:roles, id'],
-            'username' => ['required', 'string'],
-            'password' => ['required', 'string']
+            'email' => ['nullable', 'email'],
+            'role_id' => ['nullable', 'exists:roles, id'],
+            'username' => ['nullable', 'string'],
+            'password' => ['nullable', 'string'],
+            'is_block' => ['nullable', 'boolean']
         ];
     }
 }
