@@ -41,9 +41,6 @@ jobs:
     - name: Run Container
       run: docker run --name laravel-container --network host -e DB_HOST=127.0.0.1 -e DB_DATABASE=hrm -e DB_USERNAME=root -e DB_PASSWORD=Pa55w0rd -d laravel-image:latest
 
-    - name: Run install composer
-      run: docker exec laravel-container composer install
-
     - name: Run migrate
       run: docker exec laravel-container php artisan migrate --env=testing
       
