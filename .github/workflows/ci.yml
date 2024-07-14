@@ -46,4 +46,11 @@ jobs:
       
     - name: Generate key
       run: docker exec laravel-container php artisan key:generate
+
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:     
+          port: ${{ secrets.SSH_PORT }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: cd hrm_api git pull origin main
       
