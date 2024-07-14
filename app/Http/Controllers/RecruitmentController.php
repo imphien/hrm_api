@@ -32,7 +32,7 @@ class RecruitmentController extends BaseController
                 schema:      new OA\Schema(
                                  type: 'string',
                              ),
-                example:     '13-08-2000'
+                example:     '13-08-2001'
             ),
             new OA\Parameter(
                 name:        'end_date',
