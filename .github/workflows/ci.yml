@@ -27,5 +27,5 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
-          script: 'cd hrm_api git pull origin main'
+          script: 'cd hrm_api && git pull origin main'
       
