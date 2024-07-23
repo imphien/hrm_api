@@ -12,6 +12,7 @@ services:
     volumes:
       - './public:/var/www/html/public'
       - './storage:/var/www/html/storage'
+      - './docker/nginx/ssl:/etc/nginx/ssl/'
     networks:
       - backend
     depends_on:
