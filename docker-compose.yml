@@ -9,6 +9,7 @@ services:
         PHP_FPM_PORT: 9000
     ports:
       - '${DOCKER_NGINX_PORT-8000}:80'
+      - '443:443'
     volumes:
       - './public:/var/www/html/public'
       - './storage:/var/www/html/storage'
