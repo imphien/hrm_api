@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Timekeeping;
+use App\Services\TimekeepingService;
+use App\Transformers\Approval\ApprovalCollection;
+use App\Transformers\Commons\ErrorResource;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use YaangVu\LaravelBase\Base\BaseController;
+use OpenApi\Attributes as OA;
+
+class TimekeepingController extends BaseController
+{
+    public function __construct(private readonly Timekeeping $timekeeping, string $timekeepingService = TimekeepingService::class)
+    {
+        parent::__construct($this->timekeeping, $timekeepingService);
+    }
+
+    #[OA\Get(
+        path: '/timekeeping',
+        summary: 'Get timekeeping. ***DONE***',
+        security: [['BearerAuth' => []]],
+        tags: ['TIMEKEEPING'],
+        parameters: [
+            new OA\Parameter(
+                name:        'month',
+                description: 'Month',
+                in:          'query',
+                schema:      new OA\Schema(
+                                 type: 'string',
+                             ),
+                example:     '08-2000'
+            ),
+            new OA\Parameter(
+                name:        'full_name',
+                description: 'User full name',
+                in:          'query',
+                schema:      new OA\Schema(
+                                 type: 'string',
+                             ),
+                example:     'Pham Van Tien'
+            ),
+            new OA\Parameter(
+                name:        'user_id',
+                description: 'User id',
+                in:          'query',
+                schema:      new OA\Schema(
+                                 type: 'integer',
+                             ),
+                example:     '1'
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Successful',
+                content: new OA\JsonContent(ref: ApprovalCollection::class)
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'Month invalid.',
+                content: new OA\JsonContent(ref: ErrorResource::class)
+            ),
+            new OA\Response(
+                response: 401,
+                description: 'Unauthenticated',
+                content: new OA\JsonContent(ref: ErrorResource::class)
+            ),
+            new OA\Response(
+                response: 500,
+                description: "Server error",
+                content: new OA\JsonContent(ref: ErrorResource::class)
+            )
+        ]
+    )]
+    public function getAll(Request $request): JsonResponse
+    {
+        $result = ApprovalCollection::make($this->service->getAll($request));
+
+        return response()->json($result);
+    }
+}

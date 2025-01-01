@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Services\AuthService;
 use App\Transformers\Auth\LoginResource;
 use App\Transformers\Commons\ErrorResource;
+use App\Transformers\Commons\SuccessCollectionResource;
 use OpenApi\Attributes as OA;
 use YaangVu\LaravelBase\Exception\ForbiddenException;
 
@@ -60,5 +61,12 @@ class AuthController extends Controller
         $auth = $this->authService->login($request);
 
         return LoginResource::make($auth);
+    }
+
+    public function logout(): SuccessCollectionResource
+    {
+        $this->authService->logout();
+
+        return SuccessCollectionResource::make();
     }
 }

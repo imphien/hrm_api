@@ -98,8 +98,8 @@ class UpdateRequest extends FormRequest
     {
         return [
             'full_name' => ['nullable', 'string'],
-            'phone' => ['nullable, string'],
-            'birthday' => ['nullable, string'],
+            'phone' => ['nullable', 'string'],
+            'birthday' => ['nullable', 'string'],
             'sex' => ['nullable', new Enum(CreateRequest::class)],
             'email' => ['nullable', 'email'],
             'role_id' => ['nullable', 'exists:roles, id'],

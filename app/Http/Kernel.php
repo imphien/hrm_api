@@ -3,7 +3,6 @@
 namespace App\Http;
 
 use App\Http\Middleware\ApiAuthenticate;
-use App\Http\Middleware\Authenticate;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel

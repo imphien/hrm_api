@@ -1,12 +1,15 @@
 <?php
+/**
+ * @Author im.phien
+ * @Date   Nov 24, 2024
+ */
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Recruitment extends Model
+class Notification extends Model
 {
     use HasFactory;
 
@@ -16,16 +19,8 @@ class Recruitment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'role_id',
-        'quantity',
         'content',
-        'requirement',
-        'expired',
+        'start_date',
+        'end_date'
     ];
-
-    public function role(): BelongsTo
-    {
-        return $this->belongsTo(Role::class);
-    }
 }

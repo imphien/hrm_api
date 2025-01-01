@@ -48,4 +48,9 @@ class UserService extends BaseService
                                     })
                                     ->get();
     }
+
+    public function getCurrentUser()
+    {
+        return $this->model::query()->with('roles')->where('id', auth()->id())->first();
+    }
 }

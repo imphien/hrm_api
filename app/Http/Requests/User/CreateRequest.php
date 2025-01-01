@@ -87,8 +87,8 @@ class CreateRequest extends FormRequest
     {
         return [
             'full_name' => ['nullable', 'string'],
-            'phone' => ['nullable, string'],
-            'birthday' => ['nullable, string'],
+            'phone' => ['nullable', 'string'],
+            'birthday' => ['nullable', 'string'],
             'sex' => ['nullable', new Enum(CreateRequest::class)],
             'email' => ['required', 'email'],
             'role_id' => ['required', 'exists:roles, id'],

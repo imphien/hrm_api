@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Recruitment extends Model
+class Salary extends Model
 {
     use HasFactory;
 
@@ -16,16 +16,17 @@ class Recruitment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'role_id',
-        'quantity',
-        'content',
-        'requirement',
-        'expired',
+        'month',
+        'days',
+        'salary',
+        'allowance',
+        'deduction',
+        'bonus',
+        'user_id'
     ];
 
-    public function role(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(User::class);
     }
 }

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @Author im.phien
+ * @Date   Nov 24, 2024
+ */
 
 namespace App\Models;
 
@@ -6,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Recruitment extends Model
+class Approval extends Model
 {
     use HasFactory;
 
@@ -16,16 +20,18 @@ class Recruitment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'role_id',
-        'quantity',
+        'start_date',
+        'end_date',
         'content',
-        'requirement',
-        'expired',
+        'type',
+        'status',
+        'user_id',
+        'start_time',
+        'end_time',
     ];
 
-    public function role(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(User::class);
     }
 }

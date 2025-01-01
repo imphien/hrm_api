@@ -1,0 +1,96 @@
+<?php
+/**
+ * @Author im.phien
+ * @Date   Dec 01, 2024
+ */
+
+namespace App\Http\Controllers;
+
+use App\Models\Salary;
+use App\Services\SalaryService;
+use App\Transformers\Commons\ErrorResource;
+use App\Transformers\Commons\SuccessCollectionResource;
+use App\Transformers\Salary\SalaryCollection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use YaangVu\LaravelBase\Base\BaseController;
+use OpenApi\Attributes as OA;
+
+class SalaryController extends BaseController
+{
+    public function __construct(private readonly Salary $salary, string $salaryService = SalaryService::class)
+    {
+        parent::__construct($this->salary, $salaryService);
+    }
+
+    #[OA\Get(
+        path: '/salaries',
+        summary: 'Get salary. ***DONE***',
+        security: [['BearerAuth' => []]],
+        tags: ['SALARY'],
+        parameters: [
+            new OA\Parameter(
+                name:        'month',
+                description: 'Month',
+                in:          'query',
+                schema:      new OA\Schema(
+                                 type: 'string',
+                             ),
+                example:     '08-2000'
+            ),
+            new OA\Parameter(
+                name:        'full_name',
+                description: 'User full name',
+                in:          'query',
+                schema:      new OA\Schema(
+                                 type: 'string',
+                             ),
+                example:     'Pham Van Tien'
+            ),
+            new OA\Parameter(
+                name:        'user_id',
+                description: 'User id',
+                in:          'query',
+                schema:      new OA\Schema(
+                                 type: 'integer',
+                             ),
+                example:     '1'
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Successful',
+                content: new OA\JsonContent(ref: SalaryCollection::class)
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'Month invalid.',
+                content: new OA\JsonContent(ref: ErrorResource::class)
+            ),
+            new OA\Response(
+                response: 401,
+                description: 'Unauthenticated',
+                content: new OA\JsonContent(ref: ErrorResource::class)
+            ),
+            new OA\Response(
+                response: 500,
+                description: "Server error",
+                content: new OA\JsonContent(ref: ErrorResource::class)
+            )
+        ]
+    )]
+    public function getAll(Request $request): JsonResponse
+    {
+        $result = SalaryCollection::make($this->service->getAll($request));
+
+        return response()->json($result);
+    }
+
+    public function import(Request $request)
+    {
+        $this->service->import($request);
+
+        return SuccessCollectionResource::make();
+    }
+}

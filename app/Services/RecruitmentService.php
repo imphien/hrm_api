@@ -33,16 +33,18 @@ class RecruitmentService extends BaseService
     {
         $startDate = $request->get('start_date');
         $endDate = $request->get('end_date');
-        $position = $request->get('positions');
-        return $this->model::query()
+        $roleId = $request->get('role_id');
+        return $this->model::query()->with(['role'])
                            ->when($startDate, function ($q) use ($startDate){
                                $q->whereDate('expired', '>=', $startDate);
                            })
-                            ->when($startDate, function ($q) use ($endDate){
+                            ->when($endDate, function ($q) use ($endDate){
                                 $q->whereDate('expired', '<=', $endDate);
                             })
-                           ->when($position, function ($q) use ($position){
-                               $q->whereDate('position', '=', $position);
+                           ->when($roleId, function ($q) use ($roleId){
+                               $q->whereHas('role', function ($q) use ($roleId) {
+                                   $q->where('recruitments.role_id', '=', $roleId);
+                               });
                            })
                            ->get();
     }

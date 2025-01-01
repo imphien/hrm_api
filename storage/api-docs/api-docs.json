@@ -158,6 +158,138 @@
                 ]
             }
         },
+        "/recruitments/{id}": {
+            "put": {
+                "tags": [
+                    "RECRUITMENTS"
+                ],
+                "summary": "Update recruitment. ***DONE***",
+                "operationId": "e3ec408f259e51d720e12bcbe825ea54",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateRecruitmentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TrvSuccessResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Position invalid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/recruitments": {
+            "post": {
+                "tags": [
+                    "RECRUITMENTS"
+                ],
+                "summary": "Create recruitment. ***DONE***",
+                "operationId": "ccd318cf813b91e2891916ce72f1cd04",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateRecruitmentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TrvSuccessResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Email invalid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
         "/roles": {
             "get": {
                 "tags": [
@@ -440,6 +572,39 @@
                 },
                 "type": "object"
             },
+            "CreateRecruitmentRequest": {
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "position": {
+                        "description": "Position",
+                        "type": "string",
+                        "example": "PHP"
+                    },
+                    "quantity": {
+                        "description": "Quantity",
+                        "type": "string",
+                        "example": "PHP"
+                    },
+                    "content": {
+                        "description": "content",
+                        "type": "string",
+                        "example": "Intern"
+                    },
+                    "expired": {
+                        "description": "Expired",
+                        "type": "string",
+                        "example": "2024-09-09"
+                    },
+                    "requirement": {
+                        "description": "Requirement",
+                        "type": "string",
+                        "example": "Kinh nghiem tren 3 nam"
+                    }
+                },
+                "type": "object"
+            },
             "ListRecruitmentRequest": {
                 "required": [
                     "data"
@@ -462,6 +627,39 @@
                         "type": "string",
                         "example": "Developer",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateRecruitmentRequest": {
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "position": {
+                        "description": "Position",
+                        "type": "string",
+                        "example": "PHP"
+                    },
+                    "quantity": {
+                        "description": "Quantity",
+                        "type": "string",
+                        "example": "PHP"
+                    },
+                    "content": {
+                        "description": "content",
+                        "type": "string",
+                        "example": "Intern"
+                    },
+                    "expired": {
+                        "description": "Expired",
+                        "type": "string",
+                        "example": "2024-09-09"
+                    },
+                    "requirement": {
+                        "description": "Requirement",
+                        "type": "string",
+                        "example": "Kinh nghiem tren 3 nam"
                     }
                 },
                 "type": "object"

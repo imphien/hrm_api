@@ -35,6 +35,13 @@ class AuthService
         return $this->generateToken($user);
     }
 
+    public function logout(): void
+    {
+        $auth = Auth::guard();
+
+        $auth->logout();
+    }
+
     /**
      * @Description
      *

@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('recruitments', function (Blueprint $table) {
+        Schema::create('approvals', function (Blueprint $table) {
             $table->id();
-            $table->string('position');
-            $table->smallInteger('quantity');
             $table->text('content');
-            $table->text('requirement');
-            $table->date('expired');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->unsignedSmallInteger('type');
+            $table->unsignedSmallInteger('status');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('recruitments');
+        Schema::dropIfExists('approvals');
     }
 };
