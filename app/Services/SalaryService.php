@@ -40,7 +40,7 @@ class SalaryService extends BaseService
         return $this->model::query()
                            ->with(['user'])
                            ->when($month, function ($q) use ($month) {
-                               $q->whereMonth('date', '=', $month);
+                               $q->where('month', 'LIKE', '%' . $month . '%');
                            })
                            ->when($fullName, function ($q) use ($fullName) {
                                $q->whereHas('user', function ($q) use ($fullName) {

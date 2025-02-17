@@ -6,10 +6,12 @@
 
 namespace App\Services;
 
+use App\Import\TimekeepingImport;
 use App\Models\Timekeeping;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use YaangVu\LaravelBase\Base\BaseService;
 
 class TimekeepingService extends BaseService
@@ -38,7 +40,7 @@ class TimekeepingService extends BaseService
         return $this->model::query()
                            ->with(['user'])
                            ->when($month, function ($q) use ($month) {
-                               $q->whereMonth('date', '=', $month);
+                               $q->where('date', 'LIKE', '%' . $month . '%');
                            })
                            ->when($fullName, function ($q) use ($fullName) {
                                $q->whereHas('user', function ($q) use ($fullName) {
@@ -51,5 +53,12 @@ class TimekeepingService extends BaseService
                                });
                            })
                            ->get();
+    }
+
+    public function import(Request $request)
+    {
+        $file = $request->file('file');
+
+        Excel::import(new TimekeepingImport(), $file);
     }
 }

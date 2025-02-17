@@ -23,7 +23,9 @@ class Timekeeping extends Model
         'date',
         'type',
         'hours',
-        'user_id'
+        'user_id',
+        'start_time',
+        'end_time',
     ];
 
     public function user(): BelongsTo

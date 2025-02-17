@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/'], static function () {
     Route::get('/users', [UserController::class, 'getAll']);
 
     Route::get('/roles', [RoleController::class, 'getAll']);
+    Route::resource('/roles', RoleController::class)->only(['store']);
 
     Route::resource('/recruitments', RecruitmentController::class)->only(['store', 'update']);
     Route::get('/recruitments', [RecruitmentController::class, 'getAll']);
@@ -42,7 +43,10 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/'], static function () {
     Route::get('/approvals', [ApprovalController::class, 'getAll']);
 
     Route::get('/timekeeping', [TimekeepingController::class, 'getAll']);
+    Route::post('/timekeeping/import', [TimekeepingController::class, 'import']);
+    Route::resource('/timekeeping', TimekeepingController::class)->only(['store', 'update']);
 
     Route::get('/salaries', [SalaryController::class, 'getAll']);
     Route::post('/salaries/import', [SalaryController::class, 'import']);
+    Route::resource('/salaries', SalaryController::class)->only(['update']);
 });
